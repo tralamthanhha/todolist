@@ -25,14 +25,9 @@ const Tasks=new Schema({
         type:String,
         require:true,
     },
-    file:
-    {
-        type:String,
-    },
     gid:
     {
         type:String,
-        require:true,
     },
     slug:{
         type:String,

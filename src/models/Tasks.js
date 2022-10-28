@@ -20,18 +20,11 @@ const Tasks=new Schema({
     },
     isFinished:{
         type:Boolean,
+        default:false,
     },
     author:{
         type:String,
         require:true,
-    },
-    gid:
-    {
-        type:String,
-    },
-    slug:{
-        type:String,
-        slug:"id",
     }
 })
 module.exports=mongoose.model('Tasks',Tasks)

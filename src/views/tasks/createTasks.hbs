@@ -1,4 +1,4 @@
-<form action="/">
+<form action="/task/createTasks"method="post">
 <h1>CREATE TASKS: </h1>
     <label>ID</label>
     <input type="text" name="id"><br>
@@ -9,7 +9,7 @@
     <label>Deadline</label>
     <input type="Date" name="deadline"><br>
     <label>Author</label>
-    <input type="text" name="author"><br>
+    <input type="text" name="author" value={{username}}><br>
     <label>Mark as finished: </label>
     <input type="radio" name="isFinished"><br>
     <label>Groups:</label>

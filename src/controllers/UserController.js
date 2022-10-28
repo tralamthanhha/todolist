@@ -24,9 +24,9 @@ const userController={
     getLogIn:(req,res)=>{
         let error=req.flash('error')||''
         if(error){
-            return res.render('login',{error:error})
+            return res.render('users/login',{error:error})
         }
-        return res.render('users/login')
+        //return res.render('users/login')
     },
     postSignUp:(req,res)=>{
         const {username,password}=req.body
@@ -54,6 +54,28 @@ const userController={
             res.render('users/signup',{error:error})
         }
     },
+    postEditUsers:(req,res)=>{},
+    getEditUsers:(req,res)=>{
+        if(!req.session.username)
+        {
+            console.log('no exists')
+            return res.redirect('/users/login')
+        }
+        return res.render('details')
+    },
 
+    getDeleteUsers:(req,res)=>{
+        const id=req.params.username
+        Users.findOne({username:id}).then(user=>{
+            if(!user)
+            {
+                return res.redirect('/users/login')
+            }
+            user.delete()
+            return res.redirect('/users/login')
+        })
+    },
+    
+    getLogOut:(req,res)=>{},
 }
 module.exports=userController

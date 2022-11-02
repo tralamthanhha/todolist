@@ -6,4 +6,11 @@
     <label>Add avatar:</label>
     <input type="file" name="avatar"><br>
     <button type="submit">Sign Up</button>
+    {{#if error}}
+		<div class="w-100 text-center alert alert-danger">{{error}}</div>
+	{{/if}}
+				
+    {{#if success}}
+		<div class="w-100 text-center alert alert-success">{{success}}</div>
+	{{/if}}
 </form>

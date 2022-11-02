@@ -1,10 +1,13 @@
 const Tasks=require('../models/Tasks')
+let alert = require('alert');
 const TaskController={
     getcreateTasks:(req,res)=>{
+        let error=req.flash('error')||''
+        let success=req.flash('success')||''
         if(req.session.username)
         {
             username=req.session.username
-            return res.render('tasks/createTasks',{username})
+            return res.render('tasks/createTasks',{username,error:error,success:success})
         }
         return res.redirect('/users/login')
     },
@@ -15,6 +18,7 @@ const TaskController={
         +"<"+req.session.username+">"
         if(!req.session.username)
         {
+            req.flash('error','Please log in to create task')
             return res.redirect('/users/login')
         }
         Tasks.findOne({id:a}).then(task=>{
@@ -39,33 +43,40 @@ const TaskController={
     },
     postEditTasks:(req,res)=>{
         const{_id,title,description,deadline,isFinished,gid}=req.body
-        a=title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        a=title.toLowerCase().normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
         .replace(/đ/g, 'd').replace(/Đ/g, 'D').split(' ').join('-')
         .replace(/[.,\/#!$%\^&\*;:{}=\_`~()]/g,"")
         if(!req.session.username)
         {
+            req.flash('error','Please log in to edit task')
             return res.redirect('/users/login')
         }
         Tasks.findOne({_id:_id}).then(task=>{
             if(!task)
             {
-                console.log("k tồn tại tasks")
+                req.flash('error','Task not exist')
                 return res.redirect(`/tasks/edit/${task.id}`)
             }
-            let editorList=[]
+            var editor=''
+            const checkNull={
+                deadline:deadline==''?task.deadline:deadline,
+                title:title==''?task.title:title,
+                description:description==''?task.description:description,
+                gid:gid==''?task.gid:gid,
+            }
             if(task.author!=req.session.username)
             {
-                editorList.push(req.session.username)
+                editor=req.session.username
             }
             task.id=a+"<"+task.author+">"
             task.title=title
             task.description=description
-            task.deadline=deadline
             task.isFinished=isFinished
             task.gid=gid
-            task.editors=editorList
+            task.editors.push(editor)
+            task.deadline=checkNull.deadline
             task.save()
-            console.log("tasks saved to db")
             return res.redirect('/')
         })
     },
@@ -75,11 +86,14 @@ const TaskController={
         const id=req.params.id
         if(!req.session.username)
         {
+            alert('Please log in to edit task')
             return res.redirect('/users/login')
         }
         Tasks.findOne({id:id}).then(task=>{
             if(!task){
-                return res.json({success:false,msg:'Bài viết không tồn tại'})
+                alert('Task not exist')
+                return res.redirect('/tasks/create')
+                //return res.json({success:false,msg:'Task not exist'})
             }
             const data={
                 _id:task._id,
@@ -89,6 +103,8 @@ const TaskController={
                 isFinished:task.isFinished,
                 gid:task.gid,
                 deadline:task.deadline,
+                editors:task.editors,
+                author:task.author,
             }
             return res.render('tasks/details', {
                 data: data,

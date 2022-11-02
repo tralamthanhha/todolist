@@ -1,12 +1,14 @@
 const Users=require('../models/Users')
 const Tasks=require('../models/Tasks')
+const TaskAPI = require('../TasksAPI/TasksAPI')
+const e = require('express')
 const userController={
     postLogIn:(req,res,next)=>{
         const {username,password}=req.body
         Users.findOne({username:username}).then((user)=>
         {
             if(!user){
-                req.flash('error','Tài khoản không tồn tại')
+                req.flash('error','Account not exist')
                 return res.redirect('/users/login')
             }
             else{
@@ -15,10 +17,11 @@ const userController={
                     req.session.username=user.username
                     req.session.password=user.password
                     req.session.avatar=user.avatar
+                    req.flash('success','log in success')
                     return res.redirect('/')
                 }
                 else{
-                    req.flash('error','Mật khẩu không đúng!')
+                    req.flash('error','Incorrect password!')
                     return res.redirect('/users/login')
                 }
             }
@@ -27,10 +30,10 @@ const userController={
     },
     getLogIn:(req,res)=>{
         let error=req.flash('error')||''
+        let success=req.flash('success')||''
         if(error){
-            return res.render('users/login',{error:error})
+            return res.render('users/login',{error:error,success:success})
         }
-        //return res.render('users/login')
     },
     postSignUp:(req,res)=>{
         const {username,password}=req.body
@@ -54,31 +57,36 @@ const userController={
     },
     getSignUp:(req,res)=>{
         let error=req.flash('error')||''
+        let success=req.flash('success')||''
         if(error){
-            res.render('users/signup',{error:error})
+            res.render('users/signup',{error:error,success:success})
         }
     },
     postEditUsers:(req,res)=>{
         const {username,password}=req.body
+        if(!req.session.username)
+        {
+            req.flase('error','Please log in before edit')
+            return res.redirect('/users/login')
+        }
         Users.findOne({username:req.session.username})
         .then(user=>{
             if(!user){
-                console.log("cannot find users")
+                req.flash('error','cannot find users')
                 return res.redirect('/')
             }
+            //TaskAPI.editAuthor(user.username,username)
             user.username=username
             user.password=password
             user.save();
+            req.flash('success','edit account success')
             return res.redirect('/')
         })
         
     },
     getEditUsers:(req,res)=>{
-        if(!req.session.username)
-        {
-            console.log('no exists')
-            return res.redirect('/users/login')
-        }
+        let error=req.flash('error')||''
+        let success=req.flash('success')||''
         let tmp={
             name:req.session.username,
             password:req.session.password,
@@ -95,7 +103,7 @@ const userController={
                 return res.redirect('/users/login')
             }
             user.delete()
-            return res.redirect('/users/login')
+            return res.redirect('/users/login',)
         })
     },
     
@@ -125,9 +133,12 @@ const userController={
                    // console.log("Done"+" " +task.isFinished+" bad:"+task.deadline1)
                     condition1="Done"
                 }
-                else{
+                else if(task.deadline==''){
                    // console.log("a"+" "+task.isFinished+" bad:"+task.deadline)
                     condition1="No due date"
+                }
+                else{
+                    condition1="strange situation"
                 }
                 return {
                     id:task.id,

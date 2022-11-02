@@ -44,12 +44,13 @@ app.use('/tasks',TaskRouter)
 //home page source home nằm dưới cùng
 app.get('/',async(req,res)=>{
     let error=req.flash('error')||''
+    let success=req.flash('success')||''
     let tmp={
         name:req.session.username,
         password:req.session.password,
     }
     if(error){
-        return res.render('home',{data:tmp})
+        return res.render('home',{data:tmp,error,success})
     }
 })
 const port=3000

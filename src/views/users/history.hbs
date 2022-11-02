@@ -7,8 +7,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{title}}</h5>
                         <h6 name="isFinished">{{isFinished}}</h6>
-                        {{!-- <h7 id="deadline"value="{{deadline}}">
-                            {{deadline}}</h7> --}}
+                        <h7 id="deadline"value="{{deadline}}">
+                            {{deadline}}</h7>
                         <p class="card-title" id="condition" 
                         style="color:red">
                          {{condition}}
@@ -22,4 +22,11 @@
         {{/each}}
         </div>
     </div>
+{{#if error}}
+	<div class="w-100 text-center alert alert-danger">{{error}}</div>
+{{/if}}
+				
+{{#if success}}
+	<div class="w-100 text-center alert alert-success">{{success}}</div>
+{{/if}}
 </form>

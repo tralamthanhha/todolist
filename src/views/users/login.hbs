@@ -4,4 +4,11 @@
     <label>Password</label><br>
     <input type="password" name="password"><br>
     <button type="submit">Log in</button>
+    {{#if error}}
+		<div class="w-100 text-center alert alert-danger">{{error}}</div>
+	{{/if}}
+
+	{{#if success}}
+		<div class="w-100 text-center alert alert-success">{{success}}</div>
+	{{/if}}
 </form>

@@ -1,11 +1,13 @@
 const express=require('express');
 const routers=express.Router();
 const TaskController=require('../controllers/TaskController')
-routers.get('/createTasks',TaskController.getcreateTasks)
-routers.post('/createTasks',TaskController.postcreateTasks)
+const checkAuthor=require('../middlewares/checkAccount')
 
-routers.get('/editTasks',TaskController.getEditTasks)
-routers.post('/editTasks',TaskController.postEditTasks)
+routers.get('/create',TaskController.getcreateTasks)
+routers.post('/create',TaskController.postcreateTasks)
+
+routers.get('/edit/:id',TaskController.getEditTasks)
+routers.post('/edit',TaskController.postEditTasks)
 
 routers.get('/delete/:id',TaskController.getDeleteTasks)
 module.exports=routers

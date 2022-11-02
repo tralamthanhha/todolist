@@ -1,0 +1,25 @@
+<form action="/users/history"style="background-image:url({{avatar}})">
+    <div class="container">
+        <div class="row">
+        {{#each data}}
+            <div class="col-md-3 mx-2">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <h6 name="isFinished">{{isFinished}}</h6>
+                        {{!-- <h7 id="deadline"value="{{deadline}}">
+                            {{deadline}}</h7> --}}
+                        <p class="card-title" id="condition" 
+                        style="color:red">
+                         {{condition}}
+                        </p>
+                        <p class="card-text">{{author}}</p>
+                        <a href="/tasks/edit/{{id}}"class="btn btn-primary">Edit</a>
+                        <a href="/tasks/delete/{{id}}"class="btn btn-primary">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+        </div>
+    </div>
+</form>

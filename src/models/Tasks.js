@@ -6,6 +6,7 @@ mongoose.plugin(slug);
 const Tasks=new Schema({
     id:{
         type:String,
+        unique:true,
     },
     title:{
         type:String,
@@ -16,7 +17,6 @@ const Tasks=new Schema({
     },
     deadline:{
         type:Date,
-        required:true,
     },
     isFinished:{
         type:Boolean,
@@ -25,6 +25,17 @@ const Tasks=new Schema({
     author:{
         type:String,
         require:true,
+    },
+    slug:
+    {
+        type:String,
+        slug:'title'
+    },
+    gid:{
+        type:String,
+    },
+    editors:{
+        type:[String],
     }
 })
 module.exports=mongoose.model('Tasks',Tasks)

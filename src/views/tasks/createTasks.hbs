@@ -1,18 +1,19 @@
-<form action="/task/createTasks"method="post">
+<form action="/tasks/create"method="post">
 <h1>CREATE TASKS: </h1>
-    <label>ID</label>
-    <input type="text" name="id"><br>
     <label>Title</label>
     <input type="text" name="title"><br>
     <label>Description</label>
     <input type="text" name="description"><br>
     <label>Deadline</label>
-    <input type="Date" name="deadline"><br>
+    <input type="datetime-local" name="deadline"><br>
     <label>Author</label>
-    <input type="text" name="author" value={{username}}><br>
+    <label>{{username}}</label><br>
     <label>Mark as finished: </label>
-    <input type="radio" name="isFinished"><br>
+    <select name="isFinished" id="isFinished">
+    <option value="true">true</option>
+    <option value="false">false</option><br>
+    </select><br>
     <label>Groups:</label>
-    <input type="text"name="gid">
+    <input type="text"name="gid"><br>
     <button type="submit">Create</button>
 </form>

@@ -37,13 +37,20 @@ app.use(bodyParser.urlencoded({
 
 app.use(flash())
 app.use(cookieParser('ahihi'))
-app.use(session({cookie:{maxAge:30000}}))
+app.use(session({cookie:{maxAge:30000000}}))
 
 app.use('/users',userRouter)
 app.use('/tasks',TaskRouter)
 //home page source home nằm dưới cùng
 app.get('/',async(req,res)=>{
-        return res.render('home')
+    let error=req.flash('error')||''
+    let tmp={
+        name:req.session.username,
+        password:req.session.password,
+    }
+    if(error){
+        return res.render('home',{data:tmp})
+    }
 })
 const port=3000
 app.listen(port,()=>{

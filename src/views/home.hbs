@@ -1,9 +1,9 @@
-home page <br>
+<h1>home page {{data.name}}<br> 
 <a href="/users/login">Login</a> <br>
 <a href="/users/signup">sign up</a> <br>
 <a href="/users/edit">edit users</a> <br>
-<a href="/users/delete">delete users</a> <br>
+<a href="/users/delete/{{data.name}}">delete users</a> <br>
 <a href="/users/logout">log out</a> <br>
+<a href="/users/history">to do</a>
 <br> <br>
-<a href="/tasks/createTask">create Task</a>
-<a href="/tasks/editTask">edit Task</a> <br>
+<a href="/tasks/create">create Task</a>

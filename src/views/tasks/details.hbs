@@ -1,0 +1,23 @@
+<form action="/tasks/edit" method="post">
+<h1>EDIT TASKS: </h1>
+    <label>ID</label>
+    <input type="text"name="_id"value={{data._id}}>
+    <input type="text" name="id" value={{data.id}}><br>
+    <label>Title</label>
+    <input type="text" name="title"value={{data.title}}><br>
+    <label>Description</label>
+    <input type="text" name="description"value={{data.description}}><br>
+    <label>Deadline</label>
+    <input type="datetime-local" name="deadline">
+    <p id="deadline1">Value deadline:{{data.deadline}}</p>
+    <label>Author: {{data.author}}</label><br>
+    <label>Mark as finished: </label>
+    <select name="isFinished" id="isFinished">
+    <option value="true">true</option>
+    <option value="false">false</option><br>
+    </select><br>
+    <p>Value isFinished: {{data.isFinished}}</p>
+    <label>Groups:{{data.gid}}</label>
+    <input type="text"name="gid"value={{data.gid}}><br>
+    <button type="submit">EDIT</button>
+</form>

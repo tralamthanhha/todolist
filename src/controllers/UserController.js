@@ -80,6 +80,7 @@ const userController={
             user.username=username
             user.password=password
             user.save();
+            req.session.username=username
             req.flash('success','edit account success')
             return res.redirect('/')
         })

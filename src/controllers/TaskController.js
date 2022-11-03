@@ -1,5 +1,7 @@
 const Tasks=require('../models/Tasks')
 let alert = require('alert');
+const { getOne } = require('../TasksAPI/TasksAPI');
+const TaskAPI = require('../TasksAPI/TasksAPI');
 const TaskController={
     getcreateTasks:(req,res)=>{
         let error=req.flash('error')||''
@@ -47,16 +49,16 @@ const TaskController={
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/đ/g, 'd').replace(/Đ/g, 'D').split(' ').join('-')
         .replace(/[.,\/#!$%\^&\*;:{}=\_`~()]/g,"")
-        if(!req.session.username)
-        {
-            req.flash('error','Please log in to edit task')
-            return res.redirect('/users/login')
-        }
         Tasks.findOne({_id:_id}).then(task=>{
             if(!task)
             {
                 req.flash('error','Task not exist')
                 return res.redirect(`/tasks/edit/${task.id}`)
+            }
+            if(!req.session.username)
+            {
+                req.flash('error','Please log in to edit')
+                return res.redirect(`/tasks/unknown/${task.id}`)
             }
             var editor=''
             const checkNull={
@@ -84,16 +86,16 @@ const TaskController={
         const success = req.flash('success') || '';
         const error = req.flash('error') || '';
         const id=req.params.id
-        if(!req.session.username)
-        {
-            alert('Please log in to edit task')
-            return res.redirect('/users/login')
-        }
         Tasks.findOne({id:id}).then(task=>{
             if(!task){
                 alert('Task not exist')
                 return res.redirect('/tasks/create')
                 //return res.json({success:false,msg:'Task not exist'})
+            }
+            if(!req.session.username)
+            {
+                alert('Please log in to edit task')
+                return res.redirect(`/tasks/unknown/${task.id}`)
             }
             const data={
                 _id:task._id,
@@ -124,5 +126,21 @@ const TaskController={
             return res.redirect('/tasks/create')
         })
     },
+    getDetails:(req,res)=>{
+        const id=req.params.id
+        Tasks.findOne({id:id}).lean()
+        .then(task => {
+            var data={
+                id:task.id,
+                author:task.author,
+                title:task.title,
+                description:task.description,
+                deadline:task.deadline,
+                gid:task.gid,
+                editors:task.editors,
+            }
+            return res.render('tasks/detailsForUnknown',{data:data})
+        });
+    }
 }
 module.exports=TaskController

@@ -10,4 +10,6 @@ routers.get('/edit/:id',TaskController.getEditTasks)
 routers.post('/edit',TaskController.postEditTasks)
 
 routers.get('/delete/:id',TaskController.getDeleteTasks)
+
+routers.get('/unknown/:id',TaskController.getDetails)
 module.exports=routers

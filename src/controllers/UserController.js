@@ -1,7 +1,8 @@
 const Users=require('../models/Users')
 const Tasks=require('../models/Tasks')
 const TaskAPI = require('../TasksAPI/TasksAPI')
-const e = require('express')
+//const e = require('express')
+let alert = require('alert');
 const userController={
     postLogIn:(req,res,next)=>{
         const {username,password}=req.body
@@ -66,7 +67,7 @@ const userController={
         const {username,password}=req.body
         if(!req.session.username)
         {
-            req.flase('error','Please log in before edit')
+            req.flash('error','Please log in before edit')
             return res.redirect('/users/login')
         }
         Users.findOne({username:req.session.username})
@@ -75,7 +76,7 @@ const userController={
                 req.flash('error','cannot find users')
                 return res.redirect('/')
             }
-            //TaskAPI.editAuthor(user.username,username)
+            TaskAPI.editAuthor(user.username,username)
             user.username=username
             user.password=password
             user.save();
@@ -87,6 +88,12 @@ const userController={
     getEditUsers:(req,res)=>{
         let error=req.flash('error')||''
         let success=req.flash('success')||''
+        if(!req.session.username)
+        {
+            //res.send(req.flash('error'))
+            alert('Please log in to edit account')
+            return res.redirect('/users/login')
+        }
         let tmp={
             name:req.session.username,
             password:req.session.password,
@@ -163,5 +170,4 @@ bổ sung tính năng:
      khi chưa đăng nhập
     + thêm thông báo cho người khác biết 
     phải đăng nhập ms chỉnh sửa được
-    + cập nhật tên author bài viết khi chỉnh sửa tên người dùng
 */

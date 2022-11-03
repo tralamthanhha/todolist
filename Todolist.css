@@ -1,0 +1,149 @@
+html {
+  background-color: #56baed;
+}
+
+#list1{
+  box-shadow: 0 2px 15px -3px rgb(0 0 0 / 20%), 0 10px 20px -2px rgb(0 0 0 / 10%);
+}
+#list1 .form-control {
+    border-color: transparent;
+  }
+  #list1 .form-control:focus {
+    border-color: transparent;
+    box-shadow: none;
+  }
+  #list1 .select-input.form-control[readonly]:not([disabled]) {
+    background-color: #fbfbfb;
+  }
+.col-content{
+  display: grid;
+  justify-content: center;
+  text-align: center;
+}
+.card{
+  width: 700px;
+}
+.text-primary{
+  color: #3b71ca;
+  font-size: 40px;
+}
+.card-content{
+  border: 0;
+  box-shadow: 0 2px 15px -3px rgb(0 0 0 / 7%), 0 10px 20px -2px rgb(0 0 0 / 4%);
+  width: 654px;
+  justify-content: center;
+  display: inline-flex;
+  height: 61px;
+  align-items: center;
+  background: #fff;
+  border-radius: 6px;
+}
+.card-content .d-flex{
+  display: inline-flex;
+}
+.fas{
+  color: #3b71ca;
+  font-size: 15px;
+}
+.fa-check-square{
+  font-size:37px;
+}
+.btn{
+    height: 32px;
+    width: 76px;
+    background: #3b71ca;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    color: #fff;
+    box-shadow: 0 4px 9px -4px #3b71ca;
+}
+.form-control{
+  width: 462px;
+  height: 30px;
+}
+.form-control::placeholder {
+  font-weight: bold;
+  opacity: .5;
+  font-size: 15px;
+  color: #000;
+}
+.fa-calendar-alt{
+  font-size:37px;
+}
+.my-4{
+  margin-top: 37px;
+  width: 649px;
+}
+.select{
+  margin-left: 9px;
+  height: 36px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    width: 168px;
+}
+.sort{
+  margin-left: 9px;
+}
+.fa-sort-amount-down-alt{
+  color: #23af89;
+    font-size: 16px;
+    padding-left: 6px;
+}
+.list-group{
+  list-style: none;
+  display: inline-flex;
+    width: 608px;
+    align-items: center;
+}
+.li3{
+  display: grid;
+  width: 199px;
+    align-items: center;
+    justify-content: end;
+}
+.li2{
+  width: 466px;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+.lead{
+  font-size: 21px;
+}
+.text-danger{
+  padding-left: 10px;
+}
+.fa-pencil-alt{
+  color: #54b4d3 !important;
+}
+.fa-trash-alt{
+  color: #dc3545;
+}
+.text-muted{
+  color: #757575;
+  text-decoration: none;
+}
+.fa-info-circle{
+  color: #757575;
+  padding-right: 4px;
+}
+.li3 .d-flex{
+  display: flex;
+  justify-content: end;
+}
+.form-check-input{
+  width: 20px;
+  height: 23px;
+}
+.fa-hourglass-half{
+  color: #ffc107;
+  padding-right: 7px;
+}
+.li4 .small{
+  width: 167px;
+}
+.li4{
+  border: 1px solid #e4a11b;
+    border-radius: 9px;
+    background: #fff;
+}

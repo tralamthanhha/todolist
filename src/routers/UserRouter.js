@@ -14,5 +14,6 @@ route.get('/logout',userController.getLogOut)
 
 route.get('/delete/:id',userController.getDeleteUsers)
 
-route.get('/history',userController.getHistory)
+route.get('/history/:username1',userController.getHistory)
+
 module.exports=route

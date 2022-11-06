@@ -12,4 +12,8 @@ routers.post('/edit',TaskController.postEditTasks)
 routers.get('/delete/:id',TaskController.getDeleteTasks)
 
 routers.get('/unknown/:id',TaskController.getDetails)
+
+routers.get('/group/:gid/:username',TaskController.getGroups)
+
+routers.get('/deleteGroup/:gid',TaskController.getDeleteGroups)
 module.exports=routers

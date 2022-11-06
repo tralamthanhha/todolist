@@ -21,6 +21,7 @@ app.engine('hbs',handlebars.engine({
 //gọi router 
 const userRouter=require('./routers/UserRouter')
 const TaskRouter=require('./routers/TaskRouter')
+// const Group
 const path=require('path')
 const { find, findOne } = require('./models/Users')
 const { executionAsyncResource } = require('async_hooks')
@@ -47,10 +48,13 @@ app.get('/',async(req,res)=>{
     let success=req.flash('success')||''
     let tmp={
         name:req.session.username,
-        password:req.session.password,
+        avatar:req.session.avatar,
+        color:req.session.headerColor,
     }
     if(error){
-        return res.render('home',{data:tmp,error,success})
+        return res.render('home',{name:req.session.username,
+            avatar:req.session.avatar,
+            color:req.session.headerColor,error,success})
     }
 })
 const port=3000

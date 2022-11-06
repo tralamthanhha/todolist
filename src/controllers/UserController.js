@@ -1,6 +1,6 @@
 const Users=require('../models/Users')
 const Tasks=require('../models/Tasks')
-const TaskAPI = require('../TasksAPI/TasksAPI')
+const TaskAPI = require('../API/TasksAPI')
 //const e = require('express')
 let alert = require('alert');
 const userController={
@@ -18,6 +18,7 @@ const userController={
                     req.session.username=user.username
                     req.session.password=user.password
                     req.session.avatar=user.avatar
+                    req.session.headerColor=user.headerColor
                     req.flash('success','log in success')
                     return res.redirect('/')
                 }
@@ -37,7 +38,7 @@ const userController={
         }
     },
     postSignUp:(req,res)=>{
-        const {username,password}=req.body
+        const {username,password,headerColor}=req.body
         const file=req.file
         let avatarPath='/uploads/'+file.filename
         Users.findOne({username:username}).then(users=>{
@@ -49,6 +50,7 @@ const userController={
             var newUser={
                 username:username,
                 password:password,
+                headerColor:headerColor,
                 avatar:avatarPath,
             }
             new Users(newUser).save()
@@ -64,7 +66,7 @@ const userController={
         }
     },
     postEditUsers:(req,res)=>{
-        const {username,password}=req.body
+        const {username,password,headerColor}=req.body
         if(!req.session.username)
         {
             req.flash('error','Please log in before edit')
@@ -79,6 +81,7 @@ const userController={
             TaskAPI.editAuthor(user.username,username)
             user.username=username
             user.password=password
+            user.headerColor=headerColor
             user.save();
             req.session.username=username
             req.flash('success','edit account success')
@@ -99,7 +102,9 @@ const userController={
             name:req.session.username,
             password:req.session.password,
         }
-        return res.render('users/details',{data:tmp})
+        return res.render('users/details',{name:req.session.username,
+            avatar:req.session.avatar,
+            color:req.session.headerColor,data:tmp,error,success})
     },
 
     getDeleteUsers:(req,res)=>{
@@ -111,7 +116,7 @@ const userController={
                 return res.redirect('/users/login')
             }
             user.delete()
-            return res.redirect('/users/login',)
+            return res.redirect('/users/login')
         })
     },
     
@@ -119,56 +124,64 @@ const userController={
         req.session.destroy()
         return res.redirect('/')
     },
+    // getHistory:(req,res)=>{
+    //     Tasks.find({author:req.session.username}).then(tasks=>{
+    //         let condition1=""
+    //         let data=tasks.map(task=>{
+    //             const today=new Date()
+    //             if((today>task.deadline||today===task.deadline)
+    //             &&task.isFinished===false)
+    //             {
+    //                 //console.log("Missing"+" "+task.isFinished)
+    //                 condition1="Missing";
+    //             }
+    //             else if((today<task.deadline)&&task.isFinished===false)
+    //             {
+    //                // console.log("Do"+" "+task.isFinished+" bad:"+task.deadline)
+    //                 condition1="Do";
+    //             }
+    //             else if((today>task.deadline||today===task.deadline||
+    //                 today<task.deadline)&&task.isFinished===true)
+    //             {
+    //                // console.log("Done"+" " +task.isFinished+" bad:"+task.deadline1)
+    //                 condition1="Done"
+    //             }
+    //             else if(task.deadline==''){
+    //                // console.log("a"+" "+task.isFinished+" bad:"+task.deadline)
+    //                 condition1="No due date"
+    //             }
+    //             else{
+    //                 condition1="strange situation"
+    //             }
+    //             return {
+    //                 id:task.id,
+    //                 title:task.title,
+    //                 description:task.description,
+    //                 deadline:task.deadline,
+    //                 isFinished:task.isFinished,
+    //                 author:task.author,
+    //                 condition:condition1,
+    //                 gid:task.gid,
+    //             }
+    //         })
+    //         return res.render('users/history',{data:data,
+    //             avatar:req.session.avatar})
+    //     })
+    // },
     getHistory:(req,res)=>{
-        Tasks.find({author:req.session.username}).then(tasks=>{
-            let condition1=""
-            let data=tasks.map(task=>{
-                const today=new Date()
-                if((today>task.deadline||today===task.deadline)
-                &&task.isFinished===false)
-                {
-                    //console.log("Missing"+" "+task.isFinished)
-                    condition1="Missing";
-                }
-                else if((today<task.deadline)&&task.isFinished===false)
-                {
-                   // console.log("Do"+" "+task.isFinished+" bad:"+task.deadline)
-                    condition1="Do";
-                }
-                else if((today>task.deadline||today===task.deadline||
-                    today<task.deadline)&&task.isFinished===true)
-                {
-                   // console.log("Done"+" " +task.isFinished+" bad:"+task.deadline1)
-                    condition1="Done"
-                }
-                else if(task.deadline==''){
-                   // console.log("a"+" "+task.isFinished+" bad:"+task.deadline)
-                    condition1="No due date"
-                }
-                else{
-                    condition1="strange situation"
-                }
-                return {
-                    id:task.id,
-                    title:task.title,
-                    description:task.description,
-                    deadline:task.deadline,
-                    isFinished:task.isFinished,
-                    author:task.author,
-                    condition:condition1,
-                    gid:task.gid,
-                }
+        const username1=req.params.username1
+        Tasks.find({author:username1})
+        .then(tasks=>{
+            const unique = [...new Map(tasks.map((m) => [m.gid, m])).values()];
+            let data=unique.map(task=>{
+                return {gid:task.gid,username:task.author}
             })
             return res.render('users/history',{data:data,
-                avatar:req.session.avatar})
+            name:req.session.username,
+            avatar:req.session.avatar,
+            color:req.session.headerColor,username1:username1})
         })
-    }
+    },
+    
 }
 module.exports=userController
-/*
-bổ sung tính năng:
-    + disable không cho người khác chỉnh sửa
-     khi chưa đăng nhập
-    + thêm thông báo cho người khác biết 
-    phải đăng nhập ms chỉnh sửa được
-*/

@@ -1,9 +1,24 @@
 <form action="/users/login" method="post">
-    <label>Username</label><br>
-    <input type="text" name="username"><br>
-    <label>Password</label><br>
-    <input type="password" name="password"><br>
-    <button type="submit">Log in</button>
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> LOG IN </h2>
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <i class='fas fa-user' style='font-size:50px'></i>
+      </div>
+  
+      <!-- Login Form -->
+      <form>
+        <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
+        <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+        <input type="submit" class="fadeIn fourth" value="Log In">
+      </form>
+  
+    </div>
+</div>
     {{#if error}}
 		<div class="w-100 text-center alert alert-danger">{{error}}</div>
 	{{/if}}

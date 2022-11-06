@@ -36,6 +36,9 @@ const Tasks=new Schema({
     },
     editors:{
         type:[String],
+    },
+    steps:{
+        type:[String],
     }
 })
 module.exports=mongoose.model('Tasks',Tasks)

@@ -1,16 +1,29 @@
 <form action="/users/signup" method="post" enctype="multipart/form-data">
-    <label>Username</label><br>
-    <input type="text" name="username"><br>
-    <label>Password</label><br>
-    <input type="password" name="password"><br>
-    <label>Add avatar:</label>
-    <input type="file" name="avatar"><br>
-    <button type="submit">Sign Up</button>
-    {{#if error}}
-		<div class="w-100 text-center alert alert-danger">{{error}}</div>
-	{{/if}}
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> Sign up</h2>
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <i class='fas fa-user' style='font-size:50px'></i>
+      </div>
+  
+      <!-- Login Form -->
+      <form>
+        <input type="text" id="login" class="fadeIn second" name="username" placeholder="username">
+        <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+        <input type="file" name="avatar" class="fadeIn second">
+        <input type="color" name="headerColor">
+        <input type="submit" class="fadeIn fourth" value="SIGN UP">
+      </form>
+  
+    </div>
+</div>
+{{#if error}}
+	<div class="w-100 text-center alert alert-danger">{{error}}</div>
+{{/if}}
 				
-    {{#if success}}
-		<div class="w-100 text-center alert alert-success">{{success}}</div>
-	{{/if}}
-</form>
+{{#if success}}
+	<div class="w-100 text-center alert alert-success">{{success}}</div>
+{{/if}}

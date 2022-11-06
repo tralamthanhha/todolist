@@ -1,0 +1,14 @@
+<form action="/tasks/createLists"method="post">
+<h1>CREATE LISTS: </h1>
+    <label>Group ID</label>
+    <input type="text" name="gid"><br>
+    
+    <button type="submit">Create</button>
+    {{#if error}}
+		<div class="w-100 text-center alert alert-danger">{{error}}</div>
+	  {{/if}}
+				
+    {{#if success}}
+		<div class="w-100 text-center alert alert-success">{{success}}</div>
+	  {{/if}}
+</form>

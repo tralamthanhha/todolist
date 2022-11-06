@@ -1,4 +1,4 @@
-<form action="/tasks/create"method="post">
+<form action="/tasks/createTasks"method="post">
 <h1>CREATE TASKS: </h1>
     <label>Title</label>
     <input type="text" name="title"><br>
@@ -15,12 +15,14 @@
     </select><br>
     <label>Groups:</label>
     <input type="text"name="gid"><br>
+    <label>Add Step:</label>
+    
     <button type="submit">Create</button>
     {{#if error}}
 		<div class="w-100 text-center alert alert-danger">{{error}}</div>
-	{{/if}}
+	  {{/if}}
 				
     {{#if success}}
 		<div class="w-100 text-center alert alert-success">{{success}}</div>
-	{{/if}}
+	  {{/if}}
 </form>

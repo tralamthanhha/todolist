@@ -1,0 +1,39 @@
+<div class="full">
+	<nav class="header" style="background-color: {{color}};">
+		<a href="/" target="_blank" class="logo">Welcome to our Todolist ! </a>
+		<ul>
+			<li><a href="/tasks/create" target="_blank">create task</a></li>
+			<li><a href="/users/history/{{name}}" target="_blank">To Do</a></li>
+			<li><i class="fa fa-bell-o fa-2x"style="margin-right:40px"></i></li>
+			{{!-- dropdown --}}
+
+				<div class="dropdown">
+				{{#if name}}
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{name}}
+				</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="/users/edit">Edit</a>
+						<form action="/users/logout">
+							<button class="dropdown-item" type="submit"> Log out </button>
+						</form>
+						<a class="dropdown-item" href="/users/delete/{{name}}">Delete account</a>
+					</div>
+				</div>
+				{{else}}
+				<button class="btn btn-secondary dropdown-toggle" 
+				type="button" id="dropdownMenuButton" 
+				data-toggle="dropdown" aria-haspopup="true" 
+				aria-expanded="false">
+					Unknown
+				</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="/users/login">Log In</a>
+						<a class="dropdown-item" href="/users/signup">Sign Up</a>
+					</div>
+				</div>
+				{{/if}}
+		</ul>
+  
+	</nav>
+</div>

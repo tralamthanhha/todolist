@@ -1,36 +1,37 @@
 <form action="/tasks/edit" method="post">
-<h1>EDIT TASKS: </h1>
-    <label>ID</label>
-    <input type="text"name="_id"value={{data._id}} ><br>
-    <input type="text" name="id" value={{data.id}} ><br>
-    <label>Title</label>
-    <input type="text" name="title"value="{{data.title}}"><br>
-    <label>Description</label>
-    <input type="text" name="description"value="{{data.description}}"><br>
-    <label>Deadline</label>
-    <input type="datetime-local" name="deadline" value="{{data.deadline}}">
-    <p id="deadline1">Value deadline:{{data.deadline}}</p>
-    <label>Author: {{data.author}}</label><br>
-    <label>Mark as finished: </label>
-    <select name="isFinished" id="isFinished">
-    <option value="true">true</option>
-    <option value="false">false</option><br>
-    </select><br>
-    <p>Value isFinished: {{data.isFinished}}</p>
-    <label>Groups:{{data.gid}}</label>
-    <input type="text"name="gid"value="{{data.gid}}"><br>
-    <label>Editors:</label><br>
-    <p>{{data.editors}}
-        {{!-- {{#each data.editors}}
-       <h8>{{this}}</h8> 
-        {{/each}} --}}
-    </p>
-    <button type="submit">EDIT</button>
-    {{#if error}}
-		<div class="w-100 text-center alert alert-danger">{{error}}</div>
-	  {{/if}}
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> Edit Task: </h2>
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <i class="fa fa-book" style='font-size:50px'></i>
+      </div>
+  
+      <!-- Login Form -->
+      <form>
+      <label></label>
+      <input type="text"name="_id"value={{data._id}} hidden ><br>
+    <input type="text" name="id" value={{data.id}} hidden><br>
+        <input type="text" id="title" class="fadeIn second" name="title" value="{{data.title}}"placeholder="Title...">
+        <input type="text" id="description" class="fadeIn third" name="description" value="{{data.description}}"placeholder="Description...">
+        <input type="datetime-local" name="deadline" value="{{data.deadline}}"class="fadeIn second">
+        <select name="isFinished" id="isFinished" class="fadeIn third">
+        <option value="true" class="fadeIn third">true</option>
+        <option value="false" class="fadeIn third">false</option><br>
+        </select><br>
+        <input type="text"name="gid" value="{{data.gid}}" placeholder="Group id..."class="fadeIn second"><br>
+        <label>Editors:{{data.editors}}</label><br>
+        <input type="submit" class="fadeIn fourth" value="Edit Task">
+      </form>
+  
+    </div>
+</div>
+{{#if error}}
+	<div class="w-100 text-center alert alert-danger">{{error}}</div>
+{{/if}}
 				
-    {{#if success}}
-		<div class="w-100 text-center alert alert-success">{{success}}</div>
-	{{/if}}
-</form>
+{{#if success}}
+	<div class="w-100 text-center alert alert-success">{{success}}</div>
+{{/if}}

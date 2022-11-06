@@ -14,6 +14,9 @@ const Users=new Schema({
     },
     avatar:{
         type:String,
-    }
+    },
+    headerColor:{
+        type:String,
+    },
 })
 module.exports=mongoose.model('Users',Users)

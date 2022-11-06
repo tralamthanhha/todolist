@@ -1,7 +1,7 @@
 const Tasks=require('../models/Tasks')
 let alert = require('alert');
-const { getOne } = require('../TasksAPI/TasksAPI');
-const TaskAPI = require('../TasksAPI/TasksAPI');
+const { getOne } = require('../API/TasksAPI');
+const TaskAPI = require('../API/TasksAPI');
 const TaskController={
     getcreateTasks:(req,res)=>{
         let error=req.flash('error')||''
@@ -9,13 +9,16 @@ const TaskController={
         if(req.session.username)
         {
             username=req.session.username
-            return res.render('tasks/createTasks',{username,error:error,success:success})
+            return res.render('tasks/createTasks',{
+                name:req.session.username,
+            avatar:req.session.avatar,
+            color:req.session.headerColor,username,error:error,success:success})
         }
         return res.redirect('/users/login')
     },
     postcreateTasks:(req,res)=>{
         const {title,description,deadline,isFinished,gid}=req.body
-        a=title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        const a=title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/đ/g, 'd').replace(/Đ/g, 'D').split(' ').join('-').replace(/[.,\/#!$%\^&\*;:{}=\_`~()]/g,"")
         +"<"+req.session.username+">"
         if(!req.session.username)
@@ -26,6 +29,7 @@ const TaskController={
         Tasks.findOne({id:a}).then(task=>{
             if(task)
             {
+                console.log('a'+" "+task)
                 req.flash('error','task exists')
                 return res.redirect('/tasks/create')
             }
@@ -71,12 +75,37 @@ const TaskController={
             {
                 editor=req.session.username
             }
+            var oldValue={
+                id:task.id,
+                title:task.title,
+                description:task.description,
+                isFinished:task.isFinished,
+                gid:task.gid,
+                deadline:task.deadline,
+            }
+            var newValue={
+                id:a+"<"+task.author+">",
+                title:title,
+                description:description,
+                isFinished:isFinished,
+                deadline:checkNull.deadline,
+                gid:gid,
+            }
+            console.log("Result:")
+            TaskAPI.editVersion(task._id,editor,task.author,oldValue,newValue)
             task.id=a+"<"+task.author+">"
             task.title=title
             task.description=description
             task.isFinished=isFinished
             task.gid=gid
             task.editors.push(editor)
+            var unique = task.editors.filter(function(elem, pos) {
+                return task.editors.indexOf(elem) == pos;
+            })
+            task.editors=unique
+            console.log('unique:')
+            console.log(task.editors)
+            console.log(typeof(task.editors[0]))
             task.deadline=checkNull.deadline
             task.save()
             return res.redirect('/')
@@ -110,7 +139,10 @@ const TaskController={
             }
             return res.render('tasks/details', {
                 data: data,
-                success, error
+                success, error,
+                name:req.session.username,
+            avatar:req.session.avatar,
+            color:req.session.headerColor
             })
         })
         
@@ -141,6 +173,81 @@ const TaskController={
             }
             return res.render('tasks/detailsForUnknown',{data:data})
         });
-    }
+    },
+    getGroups:(req,res)=>{
+        const gid=req.params.gid
+        const username=req.params.username
+        Tasks.find({gid:gid,author:username}).then(tasks=>{
+            if(gid)
+            {
+                let data=tasks.map(task=>{
+                    const today=new Date()
+                if((today>task.deadline||today===task.deadline)
+                &&task.isFinished===false)
+                {
+                    condition1="Missing";
+                }
+                else if((today<task.deadline)&&task.isFinished===false)
+                {
+                    condition1="In Progress";
+                }
+                else if((today>task.deadline||today===task.deadline||
+                    today<task.deadline)&&task.isFinished===true)
+                {
+                    condition1="Finish"
+                }
+                else if(task.deadline==''){
+                    condition1="No due date"
+                }
+                else{
+                    condition1="strange situation"
+                }
+                    return {
+                        id:task.id,
+                        title:task.title,
+                        description:task.description,
+                        deadline:task.deadline.getDate()+"/"
+                        +(task.deadline.getMonth()+1)+"/"
+                        +task.deadline.getFullYear()+" "
+                        +task.deadline.getHours()+":"
+                        +task.deadline.getMinutes(),
+                        isFinished:task.isFinished,
+                        author:task.author,
+                        condition:condition1,
+                        gid:task.gid,
+                    }
+                })
+                return res.render('tasks/group',{data:data,
+                    name:req.session.username,
+            avatar:req.session.avatar,
+            color:req.session.headerColor,username:username})
+            }
+            else{
+                return res.redirect('/tasks/create')
+            }
+        })
+    },
+    getDeleteGroups:(req,res)=>{
+        const gid=req.params.gid
+        // Groups.findOne({gid:gid}).then(group=>{
+        //     GroupsAPI.deleteGroups(group._id)
+        // })
+        
+        Tasks.find({gid:gid,author:req.session.username})
+        .then(tasks=>{
+            if(gid)
+            {
+                tasks.forEach(deleteFunction)
+                function deleteFunction(task)
+                {
+                    task.delete()
+                }
+                return res.redirect('/tasks/create')
+            }
+            else{
+                return res.send('cannot find group')
+            }
+        })
+    },
 }
 module.exports=TaskController

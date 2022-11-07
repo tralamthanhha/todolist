@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="./Signup.css">
+  <title>Sign-up</title>
+</head>
+
+<div class="container">
+
+    <form action="/users/signup" method="post" enctype="multipart/form-data" id="signup">
+        <div class="header">
+        
+            <h3>Sign Up</h3>
+            
+            <p>You want to fill out this form</p>
+            
+        </div>
+
+        <div class="sep"></div>
+          <div class="inputs">
+
+              <label>Username</label><br>
+              <input type="text" name="username"><br>
+              <label>Password</label><br>
+              <input type="password" name="password"><br>
+              <label>Add avatar:</label>
+              <input type="file" name="avatar"><br>
+              <button type="submit" id="submit">Sign Up</button>
+              {{#if error}}
+              <div class="w-100 text-center alert alert-danger">{{error}}</div>
+            {{/if}}
+                  
+              {{#if success}}
+              <div class="w-100 text-center alert alert-success">{{success}}</div>
+            {{/if}}
+          </div>
+    </form>
+
+    <!-- write upper -->
+
+        <div class="inputs">
+        
+            <input type="email" placeholder="e-mail" autofocus />
+        
+            <input type="password" placeholder="Password" />
+            
+            <a id="submit" href="#">SIGN UP</a>
+        
+        </div>
+
+    </form>
+
+</div>
+​

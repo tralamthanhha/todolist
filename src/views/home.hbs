@@ -1,0 +1,17 @@
+<h1>home page {{data.name}}<br> 
+<a href="/users/login">Login</a> <br>
+<a href="/users/signup">sign up</a> <br>
+<a href="/users/edit">edit users</a> <br>
+<a href="/users/delete/{{data.name}}">delete users</a> <br>
+<a href="/users/logout">log out</a> <br>
+<a href="/users/history">to do</a>
+<br> <br>
+{{#if error}}
+	<div class="w-100 text-center alert alert-danger">{{error}}</div>
+{{/if}}
+				
+{{#if success}}
+	<div class="w-100 text-center alert alert-success">{{success}}</div>
+{{/if}}
+<br>
+<a href="/tasks/create">create Task</a>

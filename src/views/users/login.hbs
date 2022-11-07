@@ -1,0 +1,43 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="./Login.css">
+  <title>Login</title>
+</head>
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> Sign In </h2>
+      <h2 class="inactive underlineHover">Sign Up </h2>
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <img src="./usericon.png" id="icon" alt="User Icon" />
+      </div>
+  
+      <!-- Login Form -->
+
+      <form action="/users/login" method="post">
+        <label>Username</label><br>
+        <input type="text" name="username" id="login" class="fadeIn second" placeholder="e-mail"><br>
+        <label>Password</label><br>
+        <input type="password" name="password" id="password" class="fadeIn third" placeholder="password"><br>
+        <button type="submit" class="fadeIn fourth">Log in</button>
+        {{#if error}}
+        <div class="w-100 text-center alert alert-danger">{{error}}</div>
+      {{/if}}
+      {{#if success}}
+        <div class="w-100 text-center alert alert-success">{{success}}</div>
+      {{/if}}
+      </form>
+  
+      
+    </div>
+</div>

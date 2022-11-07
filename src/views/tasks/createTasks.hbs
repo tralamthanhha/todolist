@@ -1,0 +1,26 @@
+<form action="/tasks/create"method="post">
+<h1>CREATE TASKS: </h1>
+    <label>Title</label>
+    <input type="text" name="title"><br>
+    <label>Description</label>
+    <input type="text" name="description"><br>
+    <label>Deadline</label>
+    <input type="datetime-local" name="deadline"><br>
+    <label>Author</label>
+    <label>{{username}}</label><br>
+    <label>Mark as finished: </label>
+    <select name="isFinished" id="isFinished">
+    <option value="true">true</option>
+    <option value="false">false</option><br>
+    </select><br>
+    <label>Groups:</label>
+    <input type="text"name="gid"><br>
+    <button type="submit">Create</button>
+    {{#if error}}
+		<div class="w-100 text-center alert alert-danger">{{error}}</div>
+	{{/if}}
+				
+    {{#if success}}
+		<div class="w-100 text-center alert alert-success">{{success}}</div>
+	{{/if}}
+</form>

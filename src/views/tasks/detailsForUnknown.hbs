@@ -1,0 +1,14 @@
+<h9>{{data.id}}</h9>
+<h1>{{data.title}}</h1>
+<h6>{{data.description}}</h6>
+<h8>{{data.deadline}}</h8>
+<h8>{{data.isFinished}}</h8>
+<h6>{{data.gid}}</h6>
+<h7>{{data.editors}}</h7>
+{{#if error}}
+	<div class="w-100 text-center alert alert-danger">{{error}}</div>
+{{/if}}
+
+{{#if success}}
+	<div class="w-100 text-center alert alert-success">{{success}}</div>
+{{/if}}

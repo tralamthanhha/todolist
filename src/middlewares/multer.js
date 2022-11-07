@@ -1,15 +1,8 @@
 const express=require('express')
 const multer=require('multer')
-const fs=require('fs')
 var storage=multer.diskStorage({
     destination:function(req,file,cb){
-        let pid=req.body.Pid;
-        let dir= `src/public/uploads/${Pid}`
-        if(!fs.existsSync(dir))
-        {
-            fs.mkdirSync(dir,{recursive:true})
-        }
-        cb(null,dir)
+        cb(null,'src/public/uploads')
     },
     filename:function(req,file,cb){
         let extname=file.originalname.substring(file.originalname.lastIndexOf('.'))

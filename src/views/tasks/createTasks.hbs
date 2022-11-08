@@ -1,4 +1,38 @@
-<form action="/tasks/createTasks"method="post">
+<form action="/tasks/create" method="post">
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> Create Task: </h2>
+  
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <i class="fa fa-book" style='font-size:50px'></i>
+      </div>
+  
+      <!-- Login Form -->
+      <form>
+      {{username}}
+        <input type="text" id="title" class="fadeIn second" name="title" placeholder="Title...">
+        <input type="text" id="description" class="fadeIn third" name="description" placeholder="Description...">
+        <input type="datetime-local" name="deadline" class="fadeIn second">
+        <select name="isFinished" id="isFinished" class="fadeIn third">
+        <option value="true" class="fadeIn third">true</option>
+        <option value="false" class="fadeIn third">false</option><br>
+        </select><br>
+        <input type="text"name="gid" placeholder="Group id..." class="fadeIn second"><br>
+        <input type="submit" class="fadeIn fourth" value="Create Task">
+      </form>
+  
+    </div>
+</div>
+{{#if error}}
+	<div class="w-100 text-center alert alert-danger">{{error}}</div>
+{{/if}}
+				
+{{#if success}}
+	<div class="w-100 text-center alert alert-success">{{success}}</div>
+{{/if}}
+{{!-- <form action="/tasks/create"method="post">
 <h1>CREATE TASKS: </h1>
     <label>Title</label>
     <input type="text" name="title"><br>
@@ -15,14 +49,12 @@
     </select><br>
     <label>Groups:</label>
     <input type="text"name="gid"><br>
-    <label>Add Step:</label>
-    
     <button type="submit">Create</button>
     {{#if error}}
 		<div class="w-100 text-center alert alert-danger">{{error}}</div>
-	  {{/if}}
+	{{/if}}
 				
     {{#if success}}
 		<div class="w-100 text-center alert alert-success">{{success}}</div>
-	  {{/if}}
-</form>
+	{{/if}}
+</form> --}}

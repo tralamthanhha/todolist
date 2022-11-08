@@ -1,7 +1,6 @@
 const Users=require('../models/Users')
 const Tasks=require('../models/Tasks')
 const TaskAPI = require('../API/TasksAPI')
-//const e = require('express')
 let alert = require('alert');
 const userController={
     postLogIn:(req,res,next)=>{
@@ -89,9 +88,10 @@ const userController={
         })
         
     },
-    getEditUsers:(req,res)=>{
+    getEditUsers:async(req,res)=>{
         let error=req.flash('error')||''
         let success=req.flash('success')||''
+        const notify=await TaskAPI.getNotify(req.session.username)
         if(!req.session.username)
         {
             //res.send(req.flash('error'))
@@ -104,7 +104,10 @@ const userController={
         }
         return res.render('users/details',{name:req.session.username,
             avatar:req.session.avatar,
-            color:req.session.headerColor,data:tmp,error,success})
+            color:req.session.headerColor,
+            data:tmp,error,success,
+            notify:notify,
+        })
     },
 
     getDeleteUsers:(req,res)=>{
@@ -168,8 +171,9 @@ const userController={
     //             avatar:req.session.avatar})
     //     })
     // },
-    getHistory:(req,res)=>{
+    getHistory:async(req,res)=>{
         const username1=req.params.username1
+        const notify=await TaskAPI.getNotify(req.session.username)
         Tasks.find({author:username1})
         .then(tasks=>{
             const unique = [...new Map(tasks.map((m) => [m.gid, m])).values()];
@@ -179,7 +183,10 @@ const userController={
             return res.render('users/history',{data:data,
             name:req.session.username,
             avatar:req.session.avatar,
-            color:req.session.headerColor,username1:username1})
+            color:req.session.headerColor,
+            username1:username1,
+            notify:notify,
+            })
         })
     },
     

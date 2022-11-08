@@ -1,18 +1,21 @@
 const Tasks=require('../models/Tasks')
 let alert = require('alert');
-const { getOne } = require('../API/TasksAPI');
 const TaskAPI = require('../API/TasksAPI');
 const TaskController={
-    getcreateTasks:(req,res)=>{
+    getcreateTasks:async(req,res)=>{
         let error=req.flash('error')||''
         let success=req.flash('success')||''
         if(req.session.username)
         {
+            let notify=await TaskAPI.getNotify(req.session.username)
             username=req.session.username
             return res.render('tasks/createTasks',{
                 name:req.session.username,
-            avatar:req.session.avatar,
-            color:req.session.headerColor,username,error:error,success:success})
+                avatar:req.session.avatar,
+                color:req.session.headerColor,
+                username,error:error,success:success,
+                notify:notify,
+            })
         }
         return res.redirect('/users/login')
     },
@@ -92,7 +95,7 @@ const TaskController={
                 gid:gid,
             }
             console.log("Result:")
-            TaskAPI.editVersion(task._id,editor,task.author,oldValue,newValue)
+            TaskAPI.editVersion(task.id,editor,task.author,oldValue,newValue)
             task.id=a+"<"+task.author+">"
             task.title=title
             task.description=description
@@ -111,9 +114,10 @@ const TaskController={
             return res.redirect('/')
         })
     },
-    getEditTasks:(req,res)=>{
+    getEditTasks:async(req,res)=>{
         const success = req.flash('success') || '';
         const error = req.flash('error') || '';
+        let notify= await TaskAPI.getNotify(req.session.username)
         const id=req.params.id
         Tasks.findOne({id:id}).then(task=>{
             if(!task){
@@ -141,8 +145,9 @@ const TaskController={
                 data: data,
                 success, error,
                 name:req.session.username,
-            avatar:req.session.avatar,
-            color:req.session.headerColor
+                avatar:req.session.avatar,
+                color:req.session.headerColor,
+                notify:notify,
             })
         })
         
@@ -174,14 +179,16 @@ const TaskController={
             return res.render('tasks/detailsForUnknown',{data:data})
         });
     },
-    getGroups:(req,res)=>{
+    getGroups:async(req,res)=>{
         const gid=req.params.gid
         const username=req.params.username
-        Tasks.find({gid:gid,author:username}).then(tasks=>{
+        const notify=await TaskAPI.getNotify(req.session.username)
+        Tasks.find({gid:gid,author:username})
+        .then(tasks=>{
             if(gid)
             {
                 let data=tasks.map(task=>{
-                    const today=new Date()
+                const today=new Date()
                 if((today>task.deadline||today===task.deadline)
                 &&task.isFinished===false)
                 {
@@ -202,25 +209,28 @@ const TaskController={
                 else{
                     condition1="strange situation"
                 }
-                    return {
-                        id:task.id,
-                        title:task.title,
-                        description:task.description,
-                        deadline:task.deadline.getDate()+"/"
-                        +(task.deadline.getMonth()+1)+"/"
-                        +task.deadline.getFullYear()+" "
-                        +task.deadline.getHours()+":"
-                        +task.deadline.getMinutes(),
-                        isFinished:task.isFinished,
-                        author:task.author,
-                        condition:condition1,
-                        gid:task.gid,
-                    }
-                })
+                return {
+                    id:task.id,
+                    title:task.title,
+                    description:task.description,
+                    deadline:task.deadline.getDate()+"/"
+                    +(task.deadline.getMonth()+1)+"/"
+                    +task.deadline.getFullYear()+" "
+                    +task.deadline.getHours()+":"
+                    +task.deadline.getMinutes(),
+                    isFinished:task.isFinished,
+                    author:task.author,
+                    condition:condition1,
+                    gid:task.gid,
+                }
+            })
                 return res.render('tasks/group',{data:data,
                     name:req.session.username,
-            avatar:req.session.avatar,
-            color:req.session.headerColor,username:username})
+                    avatar:req.session.avatar,
+                    color:req.session.headerColor,
+                    username:username,
+                    notify:notify,
+                })
             }
             else{
                 return res.redirect('/tasks/create')
@@ -229,9 +239,6 @@ const TaskController={
     },
     getDeleteGroups:(req,res)=>{
         const gid=req.params.gid
-        // Groups.findOne({gid:gid}).then(group=>{
-        //     GroupsAPI.deleteGroups(group._id)
-        // })
         
         Tasks.find({gid:gid,author:req.session.username})
         .then(tasks=>{

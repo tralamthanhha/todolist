@@ -1,8 +1,37 @@
 const Notify = require('../models/Notify');
-const Tasks=require('../models/Tasks')
+const Tasks=require('../models/Tasks');
 const TaskAPI={
+    getNotify:async(username)=>{
+        return await Notify.find({author:username})
+        .then(notifies=>{
+            if(notifies)
+            {   
+                let data= notifies.map(notify=>{
+                    let edit=""
+                    if(notify.editor==''){
+                        edit=notify.author
+                    }
+                    else{
+                        edit=notify.editor
+                    }
+                    return {
+                        taskid:notify.taskid,
+                        author:notify.author,
+                        date:notify.date.getDate()+'/'
+                            +(notify.date.getMonth()+1)
+                            +'/'+notify.date.getFullYear()+' '
+                            +notify.date.getHours()+':'
+                            +notify.date.getMinutes(),
+                        editor:edit,
+                        Notify:notify.Notify,
+                    }
+                })
+                // console.log(data)
+                return data
+            }
+        })
+    },
     editVersion:async(taskid,editor,author,oldValue,newValue)=>{
-        //const today=new Date()
         const getDifference = (a, b) => 
         Object.fromEntries(Object.entries(b).
         filter(([key, val]) => 
@@ -10,6 +39,11 @@ const TaskAPI={
         const c = getDifference(oldValue,newValue);
         const notifyID=editor+new Date()//notice
         Notify.findOne({notifyID:notifyID}).then(notify=>{
+            let update=''
+            if(editor==''){update=author}
+            else{
+                update=editor
+            }
             if(notify)
             {
                 console.log("notify exists")
@@ -17,10 +51,10 @@ const TaskAPI={
             var newNotify={
                 notifyID:notifyID,
                 username:author,
-                editor:editor,
+                editor:update,
                 author:author,
                 taskid:taskid,
-                Notify:c,
+                Notify:JSON.stringify(c),
             }
             new Notify(newNotify).save()
         })
@@ -41,13 +75,8 @@ const TaskAPI={
         .then(tasks=>{
             tasks.map(task=>{
                 var oldID=task.id
-                // console.log(oldID)
                 var updateID=oldID.split('<')
-                // console.log(updateID)
                 var updateID1=updateID[1].split('>')
-                // console.log(updateID1)
-                // console.log(updateID[0])
-                // console.log(updateID[0]+"<"+updateID1[0]+">")
                 task.id=updateID[0]+"<"+newAuthor+">",
                 task.author=newAuthor,
                 task.deadline=task.deadline,

@@ -340,12 +340,13 @@ input[type=text]:placeholder {
 }
 .btn{
     height: 50px;
-    width: 206px;
-    background: #3b71ca;
+    width: 150px;
+    background-color: #3b71ca;
     border-radius: 4px;
     border: 1px solid transparent;
     color: #fff;
     box-shadow: 0 4px 9px -4px #3b71ca;
+    margin-left: 15px;
 }
 .form-control{
   width: 462px;
@@ -564,4 +565,15 @@ body {
 }
 .container-home{
   margin-top: 100px;
+}
+/* notify-bar */
+.notify-count{
+  background: #FF5D5D;
+  color: white;
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  left: 17px;
+  padding:  1px 5px;
+  border-radius: 50%;
 }

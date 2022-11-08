@@ -21,10 +21,11 @@ app.engine('hbs',handlebars.engine({
 //gọi router 
 const userRouter=require('./routers/UserRouter')
 const TaskRouter=require('./routers/TaskRouter')
-// const Group
+
 const path=require('path')
 const { find, findOne } = require('./models/Users')
 const { executionAsyncResource } = require('async_hooks')
+const TaskAPI = require('./API/TasksAPI')
 app.use(express.static(path.join(__dirname,'public')))//đường dẫn ngắn
 app.set('views',path.join(__dirname,'views'))
 
@@ -46,15 +47,16 @@ app.use('/tasks',TaskRouter)
 app.get('/',async(req,res)=>{
     let error=req.flash('error')||''
     let success=req.flash('success')||''
-    let tmp={
-        name:req.session.username,
-        avatar:req.session.avatar,
-        color:req.session.headerColor,
-    }
+    
     if(error){
+        let notify=await TaskAPI.getNotify(req.session.username)
+        console.log("notify:")
+        console.log(notify)
         return res.render('home',{name:req.session.username,
             avatar:req.session.avatar,
-            color:req.session.headerColor,error,success})
+            color:req.session.headerColor,error,success,
+            notify:notify,
+        })
     }
 })
 const port=3000

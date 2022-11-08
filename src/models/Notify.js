@@ -10,7 +10,7 @@ const Notify=new Schema({
     },
     author:{type:String},
     editor:{type:String},
-    Notify:{type:Object},
+    Notify:{type:String},
     date:{
         type:Date,
         default:new Date(),
